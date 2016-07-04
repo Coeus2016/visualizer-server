@@ -1,7 +1,6 @@
 {
-  "name": "visualizer-web-server",
+  "name": "visualizer-server",
   "version": "1.0.0",
-  "private": true,
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
@@ -29,7 +28,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Coeus2016/visualizer-web-server.git"
+    "url": "git://github.com/Coeus2016/visualizer-server.git"
   },
   "contributors": [
     {
@@ -51,7 +50,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Coeus2016/visualizer-web-server/issues",
+    "url": "https://github.com/Coeus2016/visualizer-server/issues",
     "email": "coeus.cos301.2016@gmail.com"
   }
 }
