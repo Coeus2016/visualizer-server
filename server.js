@@ -1,4 +1,5 @@
 require('./Javascript/mongoDB_Connection.js');
+require('./Javascript/rethinkDB_Connection.js');
 
 var express = require("express");
 //var jwt = require("express-jwt");
