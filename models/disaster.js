@@ -88,60 +88,6 @@ exports.update = function(req, res){
     });
 }*/
 
-
-
-
-// module.exports = {
-//
-//     schema: true,
-//
-//     attributes: {
-//
-//         location: {
-//             type: 'string',
-//             required: true,
-//                 longitude: {
-//                     type: 'string'
-//                 },
-//
-//                 lattitude: {
-//                     type: 'string'
-//                 },
-//
-//                 name: {
-//                     type: 'string'
-//                 }
-//
-//         },
-//
-//         active: {
-//             type: 'string',
-//             false: {
-//                 type: 'string'
-//             },
-//             true: {
-//                 type: 'string'
-//             }
-//         },
-//
-//         type: {
-//             type: 'string',
-//
-//         },
-//
-//         description: {
-//             type: 'string'
-//         }
-//
-//         // toJSON: function() {
-//         //   var obj = this.toObject();
-//         //   delete obj.password;
-//         //   delete obj.confirmation;
-//         //
-/**
- *
- * @description: A collection of attributes describing disasters that are happening all over the world
- */
 module.exports = {
     schema: true,
     attributes: {
