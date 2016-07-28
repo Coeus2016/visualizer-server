@@ -1,3 +1,5 @@
+/// @file disaster.js
+/// Stores all the routes that will be required  
 'use strict';
 
 module.exports = function(app) {
@@ -9,23 +11,23 @@ module.exports = function(app) {
     var floods = require('../../controller/disaster/floods');
     var severe_storms = require('../../controller/disaster/severe_storms');
 
-    // Return droughts json object
+    /// Return droughts json object
     app.route('/droughts').get();
 
-    // Rreturn dust_storms json object
+    /// Return dust_storms json object
     app.route('/dust_storms').get();
 
-    // Rreturn earthquakes json object
+    /// Return earthquakes json object
     app.route('/earthquakes').get(earthquakes.findEarthquakes);
     //app.route('/earthquakes:start').get(earthquakes.findEarthquakes);
 
-    // Rreturn fires json object
-    app.route('/fires').get();
+    /// Return fires json object
+    app.route('/fires').get(fires.findFires);
 
-    // Rreturn floods json object
+    /// Return floods json object
     app.route('/floods').get();
 
-    // Rreturn severe_storms json object
+    /// Return severe_storms json object
     app.route('/severe_storms').get();
 
 };
