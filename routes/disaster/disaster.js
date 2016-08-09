@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /// @file disaster.js
 /// Stores all the routes that will be required  
 'use strict';
@@ -33,5 +31,4 @@ module.exports = function(app) {
     app.route('/severe_storms').get();
 
 };
->>>>>>> feature/#6-create-routes
 
