@@ -1,3 +1,5 @@
+///@file earthquake.js
+/// Controller containing functionality for earthquakes 
 
 var config = require('../../Javascript/rethinkdb_config.js');
 
@@ -6,9 +8,13 @@ var bluebird = require("bluebird");
 
 var database = "earthquakes";
 
-/** Define the `/earthquakes` endpoint for the backend API. It querries the "earthquake" database
- * and retrieves the earthquakes ordered by magnitude and then returns the output as a JSON array
- */
+/**
+* @function exports.findEarthquakes
+*Defines the `/earthquakes` endpoint for the backend API. It queries the "earthquake" database
+* and retrieves the earthquakes ordered by magnitude and then returns the output as a JSON array
+* @param {object} req object containing  information about HTTP request 
+* @param  {object} res the desired HTTP response
+*/
  exports.findEarthquakes = function (req, res) {
     var conn;
     r.connect(config.database).then(function(c) {
@@ -26,11 +32,13 @@ var database = "earthquakes";
     });
 };
 
-/* Define the '/nearest' endpoint for the backend API. It takes two URL query parameters,
- * representing the lattitude and longitude of a point. It then querries the 'earthquakes' table to find the closest
- * earthquake, which is returned as a JSON object
+/**
+ * @function exports.findNearestEarthquakes
+ * Defines the '/nearest' endpoint for the backend API.  It queries the 'earthquakes' table to find the closest
+ * earthquake to the longitude and latitude specified, which then returns the result as a JSON object
+ * @param {object} req Takes two URL query parameters, representing the lattitude and longitude of a point.
+ * @param {object} res the desired HTTP response
  */
-
  exports.findNearestEarthquakes = function (req, res) {
     var latitude = req.param("latitude");
     var longitude = req.param("longitude");
