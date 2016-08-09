@@ -10,8 +10,8 @@ module.exports = {
 	
 	///@function module.exports.findFires
 	/// retrieves all the fires ordered by time as a JSON array
-	///@param req object containing  information about HTTP request 
-	///@param res the desired HTTP response
+	///@param {object} req object containing  information about HTTP request 
+	///@param {object} res the desired HTTP response
     findFires: function (req, res) {
         var conn;
         r.connect(config.database).then(function(c) {
