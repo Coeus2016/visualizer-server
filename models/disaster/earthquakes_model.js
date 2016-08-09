@@ -1,3 +1,5 @@
+/// @file earthquakes_model.js
+/// Earthquakes model
 module.exports = {
     type: "FeatureCollection",
         metadata:
