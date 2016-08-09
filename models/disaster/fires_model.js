@@ -1,62 +1,21 @@
+///@file fires_model.js
+/// Fires model
 module.exports = {
-    type: "FeatureCollection",
-    metadata:
-    {
-        generated: Long_Integer,
-        url: String,
-        title: String,
-        api: String,
-        count: Integer,
-        status: Integer
-    },
-    bbox: [
-        'minimum longitude',
-        'minimum latitude',
-        'minimum depth',
-        'maximum longitude',
-        'maximum latitude',
-        'maximum depth'
-    ],
-    features:
         [
             {
-                type: "Feature",
-                properties: {
-                    mag: Decimal,
-                    place: String,
-                    time: Long_Integer,
-                    updated: Long_Integer,
-                    tz: Integer,
-                    url: String,
-                    detail: String,
-                    felt: Integer,
-                    cdi: Decimal,
-                    mmi: Decimal,
-                    alert: String,
-                    status: String,
-                    tsunami: Integer,
-                    sig: Integer,
-                    net: String,
-                    code: String,
-                    ids: String,
-                    sources: String,
-                    types: String,
-                    nst: Integer,
-                    dmin: Decimal,
-                    rms: Decimal,
-                    gap: Decimal,
-                    magType: String,
-                    type: String
-                },
-                geometry: {
-                    type: "Point",
-                    coordinates: [
-                        longitude,
-                        latitude,
-                        depth
-                    ]
-                },
-                id: String
-            },
+		    latitude: String,
+		    longitude: String,
+                    brightness: Decimal,
+                    scan: Decimal,
+                    track: Decimal,
+                    acq_date: Date,
+                    acq_time: Long_Integer,
+                    satellite: String,
+                    confidence: Integer,
+                    version: String,
+                    bright_t31: Decimal,
+                    frp: Decimal,
+                    daynight: String
+            }
         ]
 };
