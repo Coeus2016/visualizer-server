@@ -23,7 +23,7 @@ app.use(bodyParser.json({ type: 'application/json'}));
 
 var app = express();
 //app.use(express.static(__dirname + "/public"));
-var port = 3200;        // or var port = process.env.PORT || 3200;
+var port = 3300;        // or var port = process.env.PORT || 3200;
 
 /*app.get("/", function(req, res){
     res.send("BACK-END SERVER RUNNING ON PORT 3200");
