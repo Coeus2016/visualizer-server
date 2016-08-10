@@ -1,3 +1,5 @@
+/// @file users.js
+/// Users model
 module.exports = {
 
     schema: true,

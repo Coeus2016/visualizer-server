@@ -1,3 +1,6 @@
+///@file mongodb_config.js
+/// Connection details for MongoDB connection
+
 /*var insertDocuments = function(db, callback)
  {
  // Get the documents collection
