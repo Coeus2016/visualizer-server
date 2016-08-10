@@ -1,13 +1,5 @@
-/*"use strict";
-var rethinkdb = require('rethinkdb');
-
-var connection = rethinkdb.connect({
-    host: 'localhost',
-    port: 28015
-}, function(err, data) {
-    console.log(data);
-    console.log("RethinkDB connected")
-});*/
+///@file rethinkdb_config.js
+/// Connection details for RethinkDB connection
 
 module.exports = {
     database: {
