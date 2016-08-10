@@ -20,7 +20,7 @@ module.exports = function(app) {
     //app.route('/earthquakes:start').get(earthquakes.findEarthquakes);
 
     // Rreturn fires json object
-    app.route('/fires').get();
+    app.route('/fires').get(fires.findFires);
 
     // Rreturn floods json object
     app.route('/floods').get();
