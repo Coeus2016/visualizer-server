@@ -35,6 +35,7 @@ require('./routes/disaster/disaster')(app);  // pass our application into our di
 //require('./routes/users')(app);
 
 require('./scrapper-server');
+require('../visualizer-scrapper/fireScrapData');
 
 // start app =================================================
 app.listen(port);
