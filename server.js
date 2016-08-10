@@ -30,12 +30,13 @@ var port = 3300;        // or var port = process.env.PORT || 3200;
 });*/
 
 // routes =====================================================
-require('./routes/disaster/disaster')(app);  // pass our application into our disaster route
+//require('./routes/disaster/disaster')(app);  // pass our application into our disaster route
+require('./routes/')
 
 //require('./routes/users')(app);
 
-require('./scrapper-server');
-require('../visualizer-scrapper/fireScrapData');
+//require('./scrapper-server');
+//require('../visualizer-scrapper/fireScrapData');
 
 // start app =================================================
 app.listen(port);
