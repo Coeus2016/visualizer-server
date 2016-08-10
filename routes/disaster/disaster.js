@@ -29,8 +29,5 @@ module.exports = function(app) {
     app.route('/severe_storms').get();
 
 };
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
 
