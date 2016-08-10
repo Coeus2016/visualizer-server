@@ -1,56 +1,23 @@
 {
-  "name": "visualizer-server",
+  "name": "SERVER",
   "version": "1.0.0",
-  "description": "a Sails application",
-  "keywords": [],
+  "private": true,
+  "scripts": {
+    "start": "SET NODE_ENV=dev && node server.js",
+    "test": "mocha --timeout 80000"
+  },
   "dependencies": {
-    "include-all": "~0.1.6",
-    "rc": "1.0.1",
-    "sails": "~0.12.3",
-    "sails-disk": "~0.10.9"
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "~2.4.1",
+    "express": "~4.13.4",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.0",
+    "rethinkdb": "~2.3.3",
+    "amqplib":   "~0.4.2"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "coveralls": "^2.11.9",
-    "istanbul": "^0.4.4",
-    "mocha": "^2.5.3",
-    "mocha-lcov-reporter": "^1.2.0",
-    "should": "^9.0.2",
-    "supertest": "^1.2.0"
-  },
-  "scripts": {
-    "debug": "node debug app.js",
-    "start": "node app.js",
-    "test": "./node_modules/mocha/bin/mocha",
-    "cover": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
-  },
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Coeus2016/visualizer-server.git"
-  },
-  "contributors": [
-    {
-      "name": "Nsovo Baloyi",
-      "email": "nsovo.baloyi23@gmail.com"
-    },
-    {
-      "name": "Keletso Molefe",
-      "email": "patrickkeletso@gmail.com"
-    },
-    {
-      "name": "Kamogelo Tswene",
-      "email": "kamo.tswene@gmail.com"
-    },
-    {
-      "name": "Maluleki Nyuswa",
-      "email": "malunyz@yahoo.com"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Coeus2016/visualizer-server/issues",
-    "email": "coeus.cos301.2016@gmail.com"
+    "mocha": "^2.5.3"
   }
 }
