@@ -7,18 +7,20 @@
     "test": "mocha --timeout 80000"
   },
   "dependencies": {
+    "amqplib": "~0.4.2",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
+    "cors": "^2.7.1",
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0",
+    "request": "^2.74.0",
     "rethinkdb": "~2.3.3",
-    "amqplib":   "~0.4.2"
+    "serve-favicon": "~2.3.0",
+    "thinky": "^2.3.4"
   },
   "devDependencies": {
     "mocha": "^2.5.3"
-	  
   }
 }
