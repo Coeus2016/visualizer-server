@@ -14,8 +14,6 @@ module.exports = {
     }
 }
 
-
-
 /*rethinkdb.dbCreate('DisastersDB').run(connection, function(err, result){
     if(err){
         console.log("Database already created");
