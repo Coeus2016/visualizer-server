@@ -6,6 +6,11 @@ module.exports = {
         db: "earthquakes",
         host: process.env.RDB_HOST || "localhost",
         port: process.env.RDB_PORT || 28015
+    },
+    firesDatabase: {
+        db: "fires",
+        host: process.env.RDB_HOST || "localhost",
+        port: process.env.RDB_PORT || 28015
     }
 }
 
