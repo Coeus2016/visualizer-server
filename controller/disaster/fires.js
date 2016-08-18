@@ -1,7 +1,7 @@
 /// @file fires.js
 /// Controller containing functionality for fire 
 
-var config = require('../Javascript/rethinkdb_config.js');
+var config = require('../../Javascript/rethinkdb_config.js');
 
 var r = require("rethinkdb");
 var bluebird = require("bluebird");
@@ -14,7 +14,7 @@ module.exports = {
 	///@param {object} res the desired HTTP response
     findFires: function (req, res) {
         var conn;
-        r.connect(config.database).then(function(c) {
+        r.connect(config.firesDatabase).then(function(c) {
             conn = c;
 
             return r.table("fire").orderBy(
