@@ -8,6 +8,9 @@ var database = "earthquakes";
 
 /** Define the `/earthquakes` endpoint for the backend API. It querries the "earthquake" database
  * and retrieves the earthquakes ordered by magnitude and then returns the output as a JSON array
+ * 
+ * @param req
+ * @param res
  */
  exports.findEarthquakes = function (req, res) {
     var conn;
@@ -15,7 +18,7 @@ var database = "earthquakes";
         conn = c;
 
         return r.table("quakes").orderBy(
-            r.desc(r.row("properties")("mag"))).run(conn);
+            r.desc(r.row("properties")("time"))).run(conn);
     }).then(function(cursor){ return cursor.toArray();}).then(
         function (result) { res.json(result);}).error(function (err) {
         console.log("Error handling /quakes request:", err);
@@ -26,9 +29,12 @@ var database = "earthquakes";
     });
 };
 
-/* Define the '/nearest' endpoint for the backend API. It takes two URL query parameters,
+/** Define the '/nearest' endpoint for the backend API. It takes two URL query parameters,
  * representing the lattitude and longitude of a point. It then querries the 'earthquakes' table to find the closest
  * earthquake, which is returned as a JSON object
+ * 
+ * @param req
+ * @param res
  */
 
  exports.findNearestEarthquakes = function (req, res) {
@@ -55,3 +61,80 @@ var database = "earthquakes";
             conn.close();
     });
 };
+
+/**
+ * 
+ * @param req
+ * @param res
+ */
+exports.inbetweenEarthquakes = function (req, res) {
+    var conn;
+    var firstParam = parseInt(req.params.first);
+    var secondParam = parseInt(req.params.second);
+    
+    r.connect(config.database).then(function(c) {
+        conn = c;
+        return r.table("quakes").orderBy({index:r.desc('propertiesTime')}).between(firstParam, secondParam).run(conn);
+        
+    }).then(function(cursor){ return cursor.toArray();}).then(
+        function (result) { res.json(result);}).error(function (err) {
+        console.log("Error handling /quakes request:", err);
+        res.status(500).json({success: false, err: err});
+    }).finally(function() {
+        if(conn)
+            conn.close();
+    });
+
+};
+
+
+/**
+ * 
+ * @param req
+ * @param res
+ */
+exports.lessthanEarthquakes = function (req, res) {
+    var conn;
+    var firstParam = parseInt(req.params.first);
+    
+    r.connect(config.database).then(function(c) {
+        conn = c;
+        return r.table("quakes").filter(r.row("properties")("time").lt(firstParam)).run(conn);
+
+    }).then(function(cursor){ return cursor.toArray();}).then(
+        function (result) { res.json(result);}).error(function (err) {
+        console.log("Error handling /quakes request:", err);
+        res.status(500).json({success: false, err: err});
+    }).finally(function() {
+        if(conn)
+            conn.close();
+    });
+    
+};
+
+
+/**
+ * 
+ * @param req
+ * @param res
+ */
+exports.greatorthanEarthquakes = function (req, res) {
+    var conn;
+    var firstParam = parseInt(req.params.first);
+
+    r.connect(config.database).then(function(c) {
+        conn = c;
+        return r.table("quakes").filter(r.row("properties")("time").gt(firstParam)).run(conn);
+
+    }).then(function(cursor){ return cursor.toArray();}).then(
+        function (result) { res.json(result);}).error(function (err) {
+        console.log("Error handling /quakes request:", err);
+        res.status(500).json({success: false, err: err});
+    }).finally(function() {
+        if(conn)
+            conn.close();
+    });
+
+};
+
+ 
