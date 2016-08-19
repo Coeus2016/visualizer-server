@@ -1,7 +1,15 @@
-/// @file disaster.js
-/// Stores all the routes that will be required  
+/**
+ *@file disaster.js
+ *Stores all the routes that will be required  
+ */
+
 'use strict';
 
+
+/**
+ * Module for all disaster routes
+ * @param app
+ */
 module.exports = function(app) {
 
     var droughts = require('../../controller/disaster/drought');
@@ -10,24 +18,58 @@ module.exports = function(app) {
     var fires = require('../../controller/disaster/fires');
     var floods = require('../../controller/disaster/floods');
     var severe_storms = require('../../controller/disaster/severe_storms');
-
-    /// Return droughts json object
+	
+	
+  /**
+     * Return droughts json object
+     */
     app.route('/droughts').get();
-
-    /// Return dust_storms json object
+	
+  /**
+     * Return dust_storms json object
+     */
     app.route('/dust_storms').get();
+	
+	
+   //Earthquake routes
 
-    /// Return earthquakes json object
+    /**
+     * Route for accessing all earthquakes on the database
+     */
     app.route('/earthquakes').get(earthquakes.findEarthquakes);
-    //app.route('/earthquakes:start').get(earthquakes.findEarthquakes);
-
-    /// Return fires json object
+    /**
+     * Route for accessing earthquakes between pecified years in epochTime
+     */
+    app.route('/inbetween/:first/:second').get(earthquakes.inbetweenEarthquakes);
+    /**
+     * Route for accesiing earthquakes less than a specified year in epochTime
+     */
+    app.route('/lessthan/:first').get(earthquakes.lessthanEarthquakes);
+    /**
+     * Route for accessing earthquakes greator than an specified year in epochTime
+     */
+    app.route('/greatorthan/:first').get(earthquakes.greatorthanEarthquakes);
+    
+    
+  //Fires routes
+  /**
+     * Return fires json object
+     */
     app.route('/fires').get(fires.findFires);
-
-    /// Return floods json object
+    
+    
+  //Fllods routes
+  /**
+     * Return floods json object
+     */
     app.route('/floods').get();
+    
+    
+    //severe storms routes
 
-    /// Return severe_storms json object
+  /**
+     * Return severe_storms json object
+     */
     app.route('/severe_storms').get();
 
 };
