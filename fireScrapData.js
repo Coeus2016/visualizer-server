@@ -11,7 +11,7 @@ var Converter = require("csvtojson").Converter;
 var converter = new Converter({constructResult:false});
 // App variables
 var url = 'https://firms.modaps.eosdis.nasa.gov/active_fire/c6/text/MODIS_C6_Global_24h.csv';
-var Directory = '../visualizer-scrapper/data/';
+var Directory = './data/';
 var config = require('./Javascript/rethinkdb_config.js');
 var r = require("rethinkdb");
 var bluebird = require("bluebird");
