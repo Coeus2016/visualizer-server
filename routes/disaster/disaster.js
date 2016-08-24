@@ -42,7 +42,7 @@ module.exports = function(app) {
      */
     app.route('/inbetween/:first/:second').get(earthquakes.inbetweenEarthquakes);
     /**
-     * Route for accesiing earthquakes less than a specified year in epochTime
+     * Route for accessing earthquakes less than a specified year in epochTime
      */
     app.route('/lessthan/:first').get(earthquakes.lessthanEarthquakes);
     /**
