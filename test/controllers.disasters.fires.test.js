@@ -45,7 +45,7 @@ describe('FireTest', function() {
     /**
      * Test the GET /fires route
      */
-    describe('/GET All Fires', function () {
+    describe('Testing Routes', function () {
         it('should GET all fires as a json object', function (done) {
             try {
                 chai.request(server)
@@ -59,8 +59,64 @@ describe('FireTest', function() {
                 done(e);
             }
         });
-    });
+	
+     /**
+     * Test the GET /inBetweenFires route
+     */
+        it('should GET all fires that are between specified first and second epochTimes as a json object', function (done) {
+            try {
+                chai.request(server)
+                    .get('/inBetweenFires/1472025600000/1472115600000')
+                    .end(function (err, res) {
+                        res.should.have.status(200);
+                        res.body.should.be.a('array');
+			res.body.length.should.be.eql(1595);
+			res.body.should.include({"acq_date":"2016-08-24","acq_time":345,"bright_t31":294.8,"brightness":322.2,"confidence":72,"daynight":"D","frp":49.7,"id":"0139c283-400d-43b9-9f64-099a39df5eec","latitude":-13.661,"longitude":141.733,"satellite":"A","scan":2.6,"track":1.6,"version":"6.0NRT"});
+                        done();
+                    });
+            }catch(e) {
+                done(e);
+            }
+        });
 
+    /**
+     * Test the GET /lessThanFires route
+     */
+
+        it('should GET all fires before specified epochTime as a json object', function (done) {
+            try {
+		    
+                chai.request(server)
+                    .get('/lessThanFires/1470783600000')
+                    .end(function (err, res) {
+                        res.should.have.status(200);
+                        res.body.should.be.a('array');
+			res.body.length.should.be.eql(0);
+                        done();
+                    });
+            }catch(e) {
+                done(e);
+            }
+        });
+    
+    /**
+     * Test the GET /greaterThanFires route
+     */
+        it('should GET all fires before specified epochTime as a json object', function (done) {
+            try {
+                chai.request(server)
+                    .get('/greaterThanFires/1470783600000')
+                    .end(function (err, res) {
+                        res.should.have.status(200);
+                        res.body.should.be.a('array');
+			res.body.length.should.be.eql(25752);
+                        done();
+                    });
+            }catch(e) {
+                done(e);
+            }
+        });
+    });
 })
 
 
