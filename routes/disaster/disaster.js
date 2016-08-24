@@ -53,9 +53,25 @@ module.exports = function(app) {
     
   //Fires routes
   /**
-     * Return fires json object
+     * Route for accessing all the fires
      */
     app.route('/fires').get(fires.findFires);
+    
+      /**
+     * Route for accessing all fires that occurred between the first and second epochTimes specified
+     */
+    app.route('/inBetweenfires/:first/:second').get(fires.inBetween);
+    
+    /**
+     * Route for accessing all fires that occurred before the epochTime specified
+     */
+    app.route('/lessThanFires/:first').get(fires.lessThan);
+    
+    /**
+     * Route for accessing all fires that occurred after the epochTime specified
+     */
+    app.route('/greaterThanFires/:first').get(fires.greaterThan);
+    
     
     
   //Fllods routes
