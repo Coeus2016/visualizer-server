@@ -24,20 +24,13 @@ app.use(bodyParser.json({ type: 'application/json'}));
 
 var app = express();
 
-var whiteList = [
-  'http://localhost:3000'
-];
-var corsOptions = {
-  origin: function(origin, callback){
-    var isWhiteListed = whiteList.indexOf(origin) !== -1;
-    callback(null, isWhiteListed);
-  },
-  credentials:true
-}
 
-app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: 'application/json'}));
 
 //app.use(express.static(__dirname + "/public"));
 var port = 3300;        // or var port = process.env.PORT || 3200;
