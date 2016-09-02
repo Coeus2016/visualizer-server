@@ -18,7 +18,7 @@ require('./routes/weather/weather')(app);//weather route
 //require('./routes/users')(app);
 
 require('./scrapper-server');
-require('../visualizer-scrapper/fireScrapData');
+require('./fireScrapData');
 
 //start app
 app.listen(port);
