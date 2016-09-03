@@ -33,6 +33,12 @@ exports.get = function(req, res){
 			Get name
 		*/
 		var result = JSON.parse(body);
+
+    if (typeof result.features[0]==="undefined"){
+      res.status(204).send();
+      return;
+    }
+
 		var country = result.features[0].properties.country;
 		var city = result.features[0].properties.city;
 		var name = result.features[0].properties.name;
