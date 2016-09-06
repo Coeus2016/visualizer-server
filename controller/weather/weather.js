@@ -34,7 +34,11 @@ exports.get = function(req, res){
 		*/
 		var result = JSON.parse(body);
 
-    if (typeof result.features[0]==="undefined"){
+    if (
+        typeof result.features[0]==="undefined" ||
+        typeof result.features[0].properties ==="undefined" ||
+        typeof result.features[0].properties.country === "undefined"
+    ){
       res.status(204).send();
       return;
     }
@@ -100,6 +104,8 @@ function addNewData(country, description,callback){
     for (var i=0; i<list.length; i++){
       var date = parseInt(list[i].dt)*1000;
       var temp = list[i].main.temp;
+      var temp_min = list[i].main.temp_min;
+      var temp_max = list[i].main.temp_max;
       var wind = list[i].wind;
       var humidity = list[i].main.humidity;
       var weather_icon = list[i].weather[0].icon;
@@ -110,6 +116,8 @@ function addNewData(country, description,callback){
         "country":country.toLowerCase(),
         "time": date,
         "temp": temp,
+        "temp_min":temp_min,
+        "temp_max":temp_max,
         "wind": wind,
         "humidity": humidity,
         "weather_icon": weather_icon,
