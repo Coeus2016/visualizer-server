@@ -14,7 +14,7 @@ module.exports = thinky.createModel("Weather",{
   temp_max: Number,
 	wind: Object,
 	humidity: Number,
-	weather_icon: String,
+	weather_icon: Number,
 	weather_description: String
 },{
 	pk: "id"

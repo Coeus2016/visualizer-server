@@ -108,7 +108,7 @@ function addNewData(country, description,callback){
       var temp_max = list[i].main.temp_max;
       var wind = list[i].wind;
       var humidity = list[i].main.humidity;
-      var weather_icon = list[i].weather[0].icon;
+      var weather_icon = list[i].weather[0].id;
       var weather_description = list[i].weather[0].description;
 
       var weatherObject = {
