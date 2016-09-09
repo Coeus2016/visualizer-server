@@ -3,7 +3,7 @@
 	Description: Test the weather service
 */
 
-'use strict'
+/*'use strict'
 
 var chai = require("chai");
 var expect = chai.expect;
@@ -26,7 +26,7 @@ describe("POST /getweather",function() {
 			db.table("Weather").delete();
 			done();
 		});*/
-		r.db('weather').tableDrop('Weather').run(conn,function(err, result){
+/*		r.db('weather').tableDrop('Weather').run(conn,function(err, result){
 			console.log("LOL");
 		});
 	});
@@ -37,7 +37,7 @@ describe("POST /getweather",function() {
 		done();*/
 	//});
 
-	it("respond with a json data of containing weather forecast",function(done){
+/*	it("respond with a json data of containing weather forecast",function(done){
 		/*this.timeout(20000);
 		try{
 			chai.request(server)
@@ -51,5 +51,5 @@ describe("POST /getweather",function() {
 			done(e);
 		}*/
 		//done();
-	});
-});
+/*	});
+});*/
