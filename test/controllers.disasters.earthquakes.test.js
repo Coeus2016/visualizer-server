@@ -21,7 +21,7 @@ var sinonChai = require('sinon-chai');
 
 var server = require('../server');
 var earthquake = require('../controller/disaster/earthquakes');
-var quakesTable = require('../models/disaster/earthquakes_model');
+//var quakesTable = require('../models/disaster/earthquakes_model');
 
 chai.use(chaiHttp);
 
@@ -69,7 +69,7 @@ describe('EarthQuakeTest', function() {
         it('should GET all earthquakes that are between specified first and second epochTimes as a json object', function (done) {
             try {
                 chai.request(server)
-                    .get('/inbetween_earthquakes/1471602678470/1471605529000')
+                    .get('/inbetween/1471602678470/1471605529000')
                     .end(function (err, res) {
                         res.should.have.status(200);
                         res.body.should.be.a('array');
@@ -87,11 +87,11 @@ describe('EarthQuakeTest', function() {
          * Test the GET /lessthanEarthquakes route
          */
 
-        it('should GET all eartquakes before the specified epochTime as a json object', function (done) {
+        it('should GET all earthquakes before the specified epochTime as a json object', function (done) {
             try {
 
                 chai.request(server)
-                    .get('/lessthan_earthquakes/1469623035490')
+                    .get('/lessthan/1469623035490')  //27/07/2016 17:37:15
                     .end(function (err, res) {
                         res.should.have.status(200);
                         res.body.should.be.a('array');
@@ -107,10 +107,10 @@ describe('EarthQuakeTest', function() {
         /**
          * Test the GET /greatorthanEarthquakes route
          */
-        it('should GET all eartquakes after the specified epochTime as a json object', function (done) {
+        it('should GET all earthquakes after the specified epochTime as a json object', function (done) {
             try {
                 chai.request(server)
-                    .get('/greatorthan_earthquakes/1471601958000')
+                    .get('/greatorthan/1471601958000')   //19/08/2016 12:19:18
                     .end(function (err, res) {
                         res.should.have.status(200);
                         res.body.should.be.a('array');
@@ -121,7 +121,7 @@ describe('EarthQuakeTest', function() {
                 done(e);
             }
         });
-
+////////?""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 
