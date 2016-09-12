@@ -7,21 +7,21 @@
     "test": "mocha --timeout 80000"
   },
   "dependencies": {
-    "amqplib": "~0.4.2",
+    "amqplib": "^0.4.2",
     "angular": "^1.5.8",
     "angular-ui-router": "^0.3.1",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
-    "cors": "^2.7.1",
-    "csvtojson": "^1.0.0",
+    "cors": "^2.8.1",
+    "csvtojson": "^1.0.2",
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
     "morgan": "~1.7.0",
     "request": "^2.74.0",
-    "rethinkdb": "^2.3.2",
+    "rethinkdb": "^2.3.3",
     "serve-favicon": "~2.3.0",
-    "thinky": "^2.3.4"
+    "thinky": "^2.3.6"
   },
   "devDependencies": {
     "mocha": "^2.5.3"
