@@ -43,6 +43,8 @@ var child = exec(mkdir, function(err, stdout, stderr) {
 				return r.dbCreate(config.firesDatabase.db).run(conn);
 			}).then(function() {
 				return r.tableCreate("fire").run(conn);
+			}).then(function(){
+				return r.table("fire").indexCreate("dateAndTime", [r.row("acq_date"), r.row("acq_time")], {multi: true}).run(conn);
 			}).then(function() {
 				var rfile = fs.readFile(Directory + 'fires.json', 'utf8', function(err, data){
 					if(err){

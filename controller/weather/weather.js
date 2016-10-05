@@ -48,7 +48,8 @@ exports.get = function(req, res){
 		Weather.filter(
 			r.row("time").gt(Date.now()).and(r.row("country").eq(country.toLowerCase()).and(r.row("description").eq(description.toLowerCase())))
 		).orderBy("time").run().then(function(result){
-			if (result.length<37){
+			console.log(result.length);
+			if (result.length<35){
 				/*
 					delete previously cached data
 				*/
@@ -57,7 +58,6 @@ exports.get = function(req, res){
 					"description": description.toLowerCase()
 				}).delete().run().then(function(deleted){
 				});
-				
 				/*
 					Get latest data from API and cache it in database
 				*/
@@ -89,12 +89,11 @@ exports.get = function(req, res){
 					    	res.json({message: error});
 						});
 					}
+					res.json({message: "retry"});
 				});
-
-				res.json({message: "retry"});
 			}else {
 				/*return results*/
-				res.json(result);
+				res.status(200).json(result);
 			};
 		}).error(function(err){
 			res.json({message: err});

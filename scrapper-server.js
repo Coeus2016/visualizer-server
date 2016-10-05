@@ -43,7 +43,7 @@ r.connect(config.database).then(function(c) {
     return r.tableCreate("quakes").run(conn);
 }).then(function() {
     return r.table("quakes").indexCreate(
-        "geometry", {geo: true}).run(conn);
+        "propertiesTime", r.row('properties')('time'), {multi: true}).run(conn);
 }).then(function() {
     return refresh.run(conn);
 }).error(function(err) {
