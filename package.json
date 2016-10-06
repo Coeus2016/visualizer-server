@@ -8,8 +8,6 @@
   },
   "dependencies": {
     "amqplib": "~0.4.2",
-    "angular": "^1.5.8",
-    "angular-ui-router": "^0.3.1",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.7.1",
@@ -17,13 +15,18 @@
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
-    "morgan": "~1.7.0",
+    "express-jwt": "^5.1.0",
+    "express-session": "^1.14.1",
+    "passport": "^0.3.2",
+    "password-hash-and-salt": "^0.1.4",
     "request": "^2.74.0",
     "rethinkdb": "^2.3.2",
     "serve-favicon": "~2.3.0",
+    "socket.io": "^1.4.8",
     "thinky": "^2.3.4"
   },
   "devDependencies": {
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "morgan": "^1.7.0"
   }
 }

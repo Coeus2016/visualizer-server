@@ -1,38 +1,15 @@
-/// @file users.js
-/// Users model
-module.exports = {
+/*
+ Author: Molefe Keletso
+ Description: Users Model
+ */
 
-    schema: true,
+var thinky = require("../../Javascript/users");
 
-    attributes: {
-
-        name: {
-            type: 'string',
-            required: true
-        },
-
-        title: {
-            type: 'string'
-        },
-
-        email: {
-            type: 'string',
-            email: true,
-            required: true,
-            unique: true
-        },
-
-        encryptedPassword: {
-            type: 'string'
-        }
-
-        // toJSON: function() {
-        //   var obj = this.toObject();
-        //   delete obj.password;
-        //   delete obj.confirmation;
-        //   delete obj.encryptedPassword;
-        //   delete obj._csrf;
-        //   return obj;
-        // }
-    }
-};
+module.exports = thinky.createModel("Users",{
+  email: String,
+  first_name: String,
+  last_name: String,
+  password: String
+},{
+  pk: "email"
+});

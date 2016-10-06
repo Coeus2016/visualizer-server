@@ -1,15 +1,13 @@
-/*var express = require('express');
-var router = express.Router();
-*/
-/* GET users listing. */
-/*router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+/*
+ Author: Molefe Keletso Patrick
+ Description: Login/Register Routes
+ */
 
-module.exports = router;
-*/
+'use strict';
 
-module.exports = function(app) {
+module.exports = function(app){
+  var authentication = require("../../controller/user/userController.js");
 
+  app.route('/login').post(authentication.login);
+  app.route('/register').post(authentication.register);
 };
-
