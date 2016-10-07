@@ -17,7 +17,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json'}));
 app.use(session({ secret: "We love COS301", resave: false, saveUninitialized: true }));
 
-app.use('/', expressJwt({ secret: "We love COS301" }).unless({ path: ['/login', '/register'] }));
+app.use('/', expressJwt({ secret: "We love COS301"}).unless({ path: ['/login', '/register','/token','/logout'] }));
 
 app.use(morgan('dev'));
 

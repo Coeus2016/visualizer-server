@@ -10,4 +10,6 @@ module.exports = function(app){
 
   app.route('/login').post(authentication.login);
   app.route('/register').post(authentication.register);
+  app.route('/token').get(authentication.token);
+  app.route('/logout').get(authentication.logout);
 };
