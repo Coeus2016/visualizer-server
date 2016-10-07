@@ -42,7 +42,7 @@ exports.login = function(req, res){
         } else {
           Q
             .fcall(function(){
-              return jwt.sign({ email: "xxx" }, "We love COS301");
+              return jwt.sign({ email: user.email, first_name: user.first_name, last_name: user.last_name }, "We love COS301");
             })
             .then(function(token){
               req.session.token = token;

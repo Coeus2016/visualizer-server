@@ -84,34 +84,34 @@ exports.findNearestEarthquakes = function (req, res) {
  * @param res
  */
 exports.inbetweenEarthquakes = function (req, res){
-    var conn;
-    var firstParam = parseInt(req.params.first);
-    var secondParam = parseInt(req.params.second);
+  var conn;
+  var firstParam = parseInt(req.params.first);
+  var secondParam = parseInt(req.params.second);
 
-    r.connect(config.database).then(
-      function(c){
-        conn = c;
-        return r.table("quakes").orderBy({index:r.desc('propertiesTime')}).between(firstParam, secondParam).run(conn);
-      }
-    ).then(
-      function(cursor){
-        return cursor.toArray();
-      }
-    ).then(
-      function(result){
-        res.json(result);
-      }
-    ).error(
-      function(err){
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-      }
-    ).finally(
-      function(){
-        if(conn)
-          conn.close();
-      }
-    );
+  r.connect(config.database).then(
+    function(c){
+      conn = c;
+      return r.table("quakes").orderBy({index:r.desc('propertiesTime')}).between(firstParam, secondParam).run(conn);
+    }
+  ).then(
+    function(cursor){
+      return cursor.toArray();
+    }
+  ).then(
+    function(result){
+      res.json(result);
+    }
+  ).error(
+    function(err){
+      console.log("Error handling /quakes request:", err);
+      res.status(500).json({success: false, err: err});
+    }
+  ).finally(
+    function(){
+      if(conn)
+        conn.close();
+    }
+  );
 };
 
 
@@ -121,33 +121,33 @@ exports.inbetweenEarthquakes = function (req, res){
  * @param res
  */
 exports.lessthanEarthquakes = function (req, res){
-    var conn;
-    var firstParam = parseInt(req.params.first);
+  var conn;
+  var firstParam = parseInt(req.params.first);
 
-    r.connect(config.database).then(
-      function(c) {
-        conn = c;
-        return r.table("quakes").filter(r.row("properties")("time").lt(firstParam)).run(conn);
-      }
-    ).then(
-      function(cursor){
-        return cursor.toArray();
-      }
-    ).then(
-      function(result){
-        res.json(result);
-      }
-    ).error(
-      function (err) {
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-      }
-    ).finally(
-      function(){
-        if(conn)
-          conn.close();
-      }
-    );
+  r.connect(config.database).then(
+    function(c) {
+      conn = c;
+      return r.table("quakes").filter(r.row("properties")("time").lt(firstParam)).run(conn);
+    }
+  ).then(
+    function(cursor){
+      return cursor.toArray();
+    }
+  ).then(
+    function(result){
+      res.json(result);
+    }
+  ).error(
+    function (err) {
+      console.log("Error handling /quakes request:", err);
+      res.status(500).json({success: false, err: err});
+    }
+  ).finally(
+    function(){
+      if(conn)
+        conn.close();
+    }
+  );
 };
 
 
@@ -157,32 +157,31 @@ exports.lessthanEarthquakes = function (req, res){
  * @param res
  */
 exports.greatorthanEarthquakes = function (req, res){
-    var conn;
-    var firstParam = parseInt(req.params.first);
+  var conn;
+  var firstParam = parseInt(req.params.first);
 
-    r.connect(config.database).then(
-      function(c) {
-        conn = c;
-        return r.table("quakes").filter(r.row("properties")("time").gt(firstParam)).run(conn);
-      }
-    ).then(
-      function(cursor){
-        return cursor.toArray();
-      }
-    ).then(
-      function(result){
-        res.json(result);
-      }
-    ).error(
-      function(err) {
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-      }
-    ).finally(
-      function(){
-        if(conn)
-          conn.close();
-      }
-    );
+  r.connect(config.database).then(
+    function(c) {
+      conn = c;
+      return r.table("quakes").filter(r.row("properties")("time").gt(firstParam)).run(conn);
+    }
+  ).then(
+    function(cursor){
+      return cursor.toArray();
+    }
+  ).then(
+    function(result){
+      res.json(result);
+    }
+  ).error(
+    function(err) {
+      console.log("Error handling /quakes request:", err);
+      res.status(500).json({success: false, err: err});
+    }
+  ).finally(
+    function(){
+      if(conn)
+        conn.close();
+    }
+  );
 };
-
