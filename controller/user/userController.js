@@ -99,17 +99,28 @@ exports.favourate = function(req, res) {
   Q
     .fcall(function(){
       return r.db("users").table("Users").get(email).getField("favourates").filter(function (value) {
-        return value.eq("molefe");
+        return value.eq(favourate);
       });
     })
     .then(function(value){
-      if (value.length) {
-        console.log("found");
-      }else {
-        console.log("notfound");
+      if(value.length){
+        return [
+          r.db("users").table("Users").get(email).update({
+            favourates: r.row('favourates').filter(function(item){
+              return item.ne(favourate);
+            })
+          }),
+          "removed"
+        ];
+      }else{
+        return [
+          r.db("users").table("Users").get(email).update({
+            favourates: r.row('favourates').append(favourate)
+          }),
+          "added"
+        ];
       }
+    }).spread(function(value,action){
+      res.json({message: action});
     });
-
- //console.log(req.user);
-  res.json({message: "hay hay"});
 }
