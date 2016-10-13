@@ -9,7 +9,8 @@ module.exports = thinky.createModel("Users",{
   email: String,
   first_name: String,
   last_name: String,
-  password: String
+  password: String,
+  favourates: Array
 },{
   pk: "email"
 });

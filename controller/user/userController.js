@@ -79,7 +79,8 @@ exports.register = function(req, res){
           "email": email,
           "first_name": first_name,
           "last_name": last_name,
-          "password": hash
+          "password": hash,
+          "favourates": []
         };
 
         User.save([userObject]).then(function(result) {
@@ -89,4 +90,26 @@ exports.register = function(req, res){
         });
       });
   });
+}
+
+exports.favourate = function(req, res) {
+  var favourate = req.body.favourate;
+  var email = req.user.email;
+
+  Q
+    .fcall(function(){
+      return r.db("users").table("Users").get(email).getField("favourates").filter(function (value) {
+        return value.eq("molefe");
+      });
+    })
+    .then(function(value){
+      if (value.length) {
+        console.log("found");
+      }else {
+        console.log("notfound");
+      }
+    });
+
+ //console.log(req.user);
+  res.json({message: "hay hay"});
 }

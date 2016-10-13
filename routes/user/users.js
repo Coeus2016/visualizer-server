@@ -12,6 +12,7 @@ module.exports = function(app){
   app.route('/register').post(authentication.register);
   app.route('/token').get(authentication.token);
   app.route('/logout').get(authentication.logout);
+  app.route('/favourate').post(authentication.favourate);
   app.use(function(err,req,res,next){
     if (err.name === 'UnauthorizedError'){
       res.status(401).json({message: "invalid token"});
