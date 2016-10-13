@@ -124,3 +124,15 @@ exports.favourate = function(req, res) {
       res.json({message: action});
     });
 }
+
+exports.getfavourate = function(req, res){
+  var email = req.user.email;
+
+  Q
+    .fcall(function(){
+      return r.db("users").table("Users").get(email).getField("favourates");
+    })
+    .then(function(value){
+      res.json({message: value});
+    });
+}
