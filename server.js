@@ -19,6 +19,7 @@ require('./routes/weather/weather')(app);//weather route
 
 require('./scrapper-server');
 require('./fireScrapData');
+require('./scrapper-server-floods');
 
 //start app
 app.listen(port);
