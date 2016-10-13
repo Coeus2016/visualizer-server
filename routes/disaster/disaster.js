@@ -74,11 +74,11 @@ module.exports = function(app) {
     
     
     
-  //Fllods routes
+  //Floods routes
   /**
-     * Return floods json object
+     * Route for accessing all floodAreas on the database
      */
-    app.route('/floods').get();
+    app.route('/floods').get(floods.findFloodAreas);
     
     
     //severe storms routes
