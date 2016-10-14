@@ -14,6 +14,7 @@ module.exports = function(app){
   app.route('/logout').get(authentication.logout);
   app.route('/favourate').post(authentication.favourate);
   app.route('/getfavourate').get(authentication.getfavourate);
+  app.route('/earthquakefilter').post(authentication.earthquakefilter);
   app.use(function(err,req,res,next){
     if (err.name === 'UnauthorizedError'){
       res.status(401).json({message: "invalid token"});

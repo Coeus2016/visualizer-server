@@ -80,7 +80,8 @@ exports.register = function(req, res){
           "first_name": first_name,
           "last_name": last_name,
           "password": hash,
-          "favourates": []
+          "favourates": [],
+          "earthquakes": {location: 0, date: 2, magnitude: 3}
         };
 
         User.save([userObject]).then(function(result) {
@@ -134,5 +135,20 @@ exports.getfavourate = function(req, res){
     })
     .then(function(value){
       res.json({message: value});
+    });
+}
+
+exports.earthquakefilter = function(req, res){
+  var filter = JSON.parse(req.body.filter);
+  var email = req.user.email;
+
+  Q
+    .fcall(function(){
+      return r.db("users").table("Users").get(email).update({
+        earthquakes: filter
+      });
+    })
+    .then(function(){
+      res.send("saved");
     });
 }
