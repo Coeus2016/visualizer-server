@@ -152,3 +152,15 @@ exports.earthquakefilter = function(req, res){
       res.send("saved");
     });
 }
+
+exports.getearthquakefilter = function(req, res){
+  var email = req.user.email;
+
+  Q
+    .fcall(function(){
+      return r.db("users").table("Users").get(email).getField("earthquakes");
+    })
+    .then(function(value){
+      res.json({message: value});
+    });
+}
