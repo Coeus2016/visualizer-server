@@ -28,8 +28,8 @@ require('./routes/disaster/disaster')(app);//pass our application into our disas
 require('./routes/weather/weather')(app);//weather route
 require('./routes/user/users')(app);//Login and Register
 
-require('./scrapper-server');
-require('./fireScrapData');
+//require('./scrapper-server');
+//require('./fireScrapData');
 
 //start app
 //app.listen(port);

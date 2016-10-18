@@ -63,10 +63,10 @@ setInterval(function() {
     console.log("Scrapping number: " + scrapeCount++ + ", current-time: " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
 
     var connect;
-    
+
     r.connect(config.database).then(function (c) {
         connect = c;
-        
+
         return bluebird.join(refresh.run(connect), r.table("quakes")
             .filter(r.epochTime(r.row("properties")("time").div(1000)).lt(
                 r.now().sub(60 * 60 * 24 * 30))).delete().run(connect));

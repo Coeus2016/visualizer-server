@@ -121,9 +121,11 @@ exports.favourate = function(req, res) {
           "added"
         ];
       }
-    }).spread(function(value,action){
+    })
+    .spread(function(value,action){
       res.json({message: action});
-    });
+    })
+    .done();
 }
 
 exports.getfavourate = function(req, res){
@@ -135,7 +137,8 @@ exports.getfavourate = function(req, res){
     })
     .then(function(value){
       res.json({message: value});
-    });
+    })
+    .done();
 }
 
 exports.earthquakefilter = function(req, res){
@@ -150,7 +153,8 @@ exports.earthquakefilter = function(req, res){
     })
     .then(function(){
       res.send("saved");
-    });
+    })
+    .done();
 }
 
 exports.getearthquakefilter = function(req, res){
@@ -162,5 +166,6 @@ exports.getearthquakefilter = function(req, res){
     })
     .then(function(value){
       res.json({message: value});
-    });
+    })
+    .done();
 }
