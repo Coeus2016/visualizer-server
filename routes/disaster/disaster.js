@@ -10,13 +10,16 @@
  * Module for all disaster routes
  * @param app
  */
-module.exports = function(app) {
+module.exports = function(app,io) {
   var droughts = require('../../controller/disaster/drought');
   var dust_storms = require('../../controller/disaster/dust_storms');
   var earthquakes = require('../../controller/disaster/earthquakes');
   var fires = require('../../controller/disaster/fires');
   var floods = require('../../controller/disaster/floods');
   var severe_storms = require('../../controller/disaster/severe_storms');
+
+  //Send socket IO
+  earthquakes.io = io;
 
   app.route('/filteredquakes').post(earthquakes.filteredquakes);
 

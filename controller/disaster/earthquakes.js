@@ -9,13 +9,14 @@ exports.filteredquakes = function(req, res){
   var longitude = req.body.longitude;
   var latitude = req.body.latitude;
   var email = req.user.email;
+  var changes;
 
   Q
     .fcall(function(){
       return r.db("users").table("Users").get(email).getField("earthquakes");
     })
     .then(function(quakefilter){
-      return r.db("earthquakes").table("quakes").filter(function(value){
+      changes = Earthquakes.filter(function(value){
         var stmt;
 
         if (quakefilter.date==0){
@@ -40,9 +41,47 @@ exports.filteredquakes = function(req, res){
             .and(r.distance(value("geometry"),v,{unit: 'km'}).lt(quakefilter.location)).and(stmt);
         }
       });
+
+      return changes;
     })
     .then(function(quakes){
       res.send(quakes);
     })
-    .done();
+    .done(function(){
+      changes.changes().run().then(function(feed) {
+        feed.each(function(error, doc) {
+          if (error) {
+            console.log(error);
+            process.exit(1);
+          }
+
+          if (doc.isSaved() === false) {
+            console.log("The following document was deleted:");
+            console.log(JSON.stringify(doc));
+          }
+          else if (doc.getOldValue() == null) {
+            console.log("A new document was inserted:");
+            console.log(JSON.stringify(doc));
+
+            exports.io.on('connection',function(socket){
+              socket.emit('news', { hello: 'world' });
+              socket.on('my other event', function (data) {
+                console.log(data);
+              });
+            });
+            
+          }
+          else {
+            console.log("A document was updated.");
+            console.log("Old value:");
+            console.log(JSON.stringify(doc.getOldValue()));
+            console.log("New value:");
+            console.log(JSON.stringify(doc));
+          }
+        });
+      }).error(function(error) {
+        console.log(error);
+        process.exit(1);
+      });
+    });
 }

@@ -24,7 +24,7 @@ app.use(morgan('dev'));
 var port = 3300;
 
 //routes
-require('./routes/disaster/disaster')(app);//pass our application into our disaster route
+require('./routes/disaster/disaster')(app,io);//pass our application into our disaster route
 require('./routes/weather/weather')(app);//weather route
 require('./routes/user/users')(app);//Login and Register
 
