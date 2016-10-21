@@ -56,20 +56,14 @@ exports.filteredquakes = function(req, res){
           }
 
           if (doc.isSaved() === false) {
-            console.log("The following document was deleted:");
-            console.log(JSON.stringify(doc));
+            //console.log("The following document was deleted:");
+            //console.log(JSON.stringify(doc));
           }
           else if (doc.getOldValue() == null) {
-            console.log("A new document was inserted:");
-            console.log(JSON.stringify(doc));
+            //console.log("A new document was inserted:");
+            //console.log(JSON.stringify(doc));
 
-            exports.io.on('connection',function(socket){
-              socket.emit('news', { hello: 'world' });
-              socket.on('my other event', function (data) {
-                console.log(data);
-              });
-            });
-            
+            exports.io.sockets.emit(email,doc);
           }
           else {
             console.log("A document was updated.");

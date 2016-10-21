@@ -8,7 +8,8 @@ var expressJwt = require('express-jwt');
 var app = express();
 
 var server = http.createServer(app);
-var io = require('socket.io')(server);
+var sockio = require("socket.io");
+var io = sockio.listen(app.listen(3300),{log:false});
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -33,6 +34,6 @@ require('./routes/user/users')(app);//Login and Register
 
 //start app
 //app.listen(port);
-server.listen(port);
+//server.listen(port);
 console.log("Server listening on port " + port);
 exports = module.exports = app;
