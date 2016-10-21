@@ -17,7 +17,7 @@ var Weather = require("../../models/weather/weather");
 
 /*
 	Reverse geocode the longitude and latitude using http://photon.komoot.de/,
-	check if the data is already available for a place in the cache, 
+	check if the data is already available for a place in the cache,
 	if not pull data and  cache it.
 */
 exports.get = function(req, res){
@@ -33,6 +33,16 @@ exports.get = function(req, res){
 			Get name
 		*/
 		var result = JSON.parse(body);
+
+    if (
+        typeof result.features[0]==="undefined" ||
+        typeof result.features[0].properties ==="undefined" ||
+        typeof result.features[0].properties.country === "undefined"
+    ){
+      res.status(204).send();
+      return;
+    }
+
 		var country = result.features[0].properties.country;
 		var city = result.features[0].properties.city;
 		var name = result.features[0].properties.name;
@@ -41,62 +51,85 @@ exports.get = function(req, res){
 		if (typeof city!=="undefined")
 			description = city;
 		else description = name;
-		
-		/*
-			Query cached weather data
-		*/
-		Weather.filter(
-			r.row("time").gt(Date.now()).and(r.row("country").eq(country.toLowerCase()).and(r.row("description").eq(description.toLowerCase())))
-		).orderBy("time").run().then(function(result){
-			console.log(result.length);
-			if (result.length<35){
-				/*
-					delete previously cached data
-				*/
-				Weather.filter({
-					"country": country.toLowerCase(),
-					"description": description.toLowerCase()
-				}).delete().run().then(function(deleted){
-				});
-				/*
-					Get latest data from API and cache it in database
-				*/
-				request({
-					uri: "http://api.openweathermap.org/data/2.5/forecast?q="+description+","+country+"&units=metric&cnt=40&mode=json&appid=f008bbc82eaffb5f3ac52a2806311d15",
-					method: "GET"
-				},function(error, response,body){
-					var list = JSON.parse(body).list;
 
-					for (var i=0; i<list.length; i++){
-						var date = parseInt(list[i].dt)*1000;
-						var temp = list[i].main.temp;
-						var wind = list[i].wind;
-						var humidity = list[i].main.humidity;
-						var weather_icon = list[i].weather[0].icon;
-						var weather_description = list[i].weather[0].description;
+    getCachedData(country,description,function(results){
+      if (results.length<35){
+        deleteOldData(country,description);
+        addNewData(country,description,function(response){
+          res.status(200).json(response);
+        });
+      }else {
+        res.status(200).json(results);
+      }
+    });
 
-						Weather.save([{
-							"description": description.toLowerCase(), 
-							"country":country.toLowerCase(), 
-							"time": date,
-							"temp": temp,
-							"wind": wind,
-							"humidity": humidity,
-							"weather_icon": weather_icon,
-							"weather_description": weather_description
-						}]).then(function(result) {
-						}).error(function(error) {
-					    	res.json({message: error});
-						});
-					}
-					res.json({message: "retry"});
-				});
-			}else {
-				/*return results*/
-				res.status(200).json(result);
-			};
-		}).error(function(err){
-			res.json({message: err});
-		});
 	});
 };
+
+function deleteOldData(country,description){
+  return Weather.filter({
+    "country": country.toLowerCase(),
+    "description": description.toLowerCase()
+  }).delete().run().then(function(deleted){
+    return deleted;
+  });
+}
+
+function getCachedData(country, description,callback){
+  Weather
+    .filter(
+      r
+        .row("time")
+        .gt(Date.now())
+        .and(r.row("country").eq(country.toLowerCase()).and(r.row("description").eq(description.toLowerCase())))
+    )
+    .orderBy("time")
+    .run()
+    .then(function(result){
+      callback(result);
+    })
+    .error(function(err){
+      res.json({message: err});
+    });
+}
+
+function addNewData(country, description,callback){
+  request({
+    uri: "http://api.openweathermap.org/data/2.5/forecast?q="+description+","+country+"&units=metric&cnt=40&mode=json&appid=f008bbc82eaffb5f3ac52a2806311d15",
+    method: "GET"
+  },function(error, response,body){
+    var list = JSON.parse(body).list;
+    var resul = [];
+
+    for (var i=0; i<list.length; i++){
+      var date = parseInt(list[i].dt)*1000;
+      var temp = list[i].main.temp;
+      var temp_min = list[i].main.temp_min;
+      var temp_max = list[i].main.temp_max;
+      var wind = list[i].wind;
+      var humidity = list[i].main.humidity;
+      var weather_icon = list[i].weather[0].id;
+      var weather_description = list[i].weather[0].description;
+
+      var weatherObject = {
+        "description": description.toLowerCase(),
+        "country":country.toLowerCase(),
+        "time": date,
+        "temp": temp,
+        "temp_min":temp_min,
+        "temp_max":temp_max,
+        "wind": wind,
+        "humidity": humidity,
+        "weather_icon": weather_icon,
+        "weather_description": weather_description
+      };
+      resul.push(weatherObject);
+
+      Weather.save([weatherObject]).then(function(result) {
+      }).error(function(error) {
+        res.json({message: error});
+      });
+    }
+    callback(resul);
+  });
+}

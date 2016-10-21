@@ -1,139 +1,81 @@
+var thinky = require("../../Javascript/quakes");
+var r = thinky.r;
+var Errors = thinky.Errors;
+var Q = require('q');
 
-var config = require('../../Javascript/rethinkdb_config.js');
+var Earthquakes = require("../../models/disaster/earthquakes_model");
 
-var r = require("rethinkdb");
-var bluebird = require("bluebird");
+exports.filteredquakes = function(req, res){
+  var longitude = req.body.longitude;
+  var latitude = req.body.latitude;
+  var email = req.user.email;
+  var changes;
 
-var database = "earthquakes";
+  Q
+    .fcall(function(){
+      return r.db("users").table("Users").get(email).getField("earthquakes");
+    })
+    .then(function(quakefilter){
+      changes = Earthquakes.filter(function(value){
+        var stmt;
 
-/** Define the `/earthquakes` endpoint for the backend API. It querries the "earthquake" database
- * and retrieves the earthquakes ordered by magnitude and then returns the output as a JSON array
- * 
- * @param req
- * @param res
- */
- exports.findEarthquakes = function (req, res) {
-    var conn;
-    r.connect(config.database).then(function(c) {
-        conn = c;
+        if (quakefilter.date==0){
+          stmt = r.now().sub(r.epochTime(value("properties")("time").div(1000))).lt(1*3600);
+        }else if (quakefilter.date==1){
+          stmt = r.now().date().eq(r.epochTime(value("properties")("time").div(1000)).date());
+        }else if (quakefilter.date==2){
+          stmt = r.now().sub(r.epochTime(value("properties")("time").div(1000))).lt(24*3600);
+        }else if (quakefilter.date==3){
+          stmt = r.now().sub(r.epochTime(value("properties")("time").div(1000))).lt(48*3600);
+        }else if (quakefilter.date==4){
+          stmt = r.epochTime(value("properties")("time").div(1000)).gt(r.now().date().sub(r.now().date().day()));
+        }
 
-        return r.table("quakes").orderBy(
-            r.desc(r.row("properties")("time"))).run(conn);
-    }).then(function(cursor){ return cursor.toArray();}).then(
-        function (result) { res.json(result);}).error(function (err) {
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-    }).finally(function() {
-        if(conn)
-            conn.close();
+        if (quakefilter.location == -1){
+          return value("properties")("mag").gt(parseFloat(quakefilter.magnitude)).and(stmt);
+        }
+        else {
+          var v = r.point(longitude,latitude);
+
+          return value("properties")("mag").gt(parseFloat(quakefilter.magnitude))
+            .and(r.distance(value("geometry"),v,{unit: 'km'}).lt(quakefilter.location)).and(stmt);
+        }
+      });
+
+      return changes;
+    })
+    .then(function(quakes){
+      res.send(quakes);
+    })
+    .done(function(){
+      changes.changes().run().then(function(feed) {
+        feed.each(function(error, doc) {
+          if (error) {
+            console.log(error);
+            process.exit(1);
+          }
+
+          if (doc.isSaved() === false) {
+            //console.log("The following document was deleted:");
+            //console.log(JSON.stringify(doc));
+          }
+          else if (doc.getOldValue() == null) {
+            //console.log("A new document was inserted:");
+            //console.log(JSON.stringify(doc));
+
+            exports.io.sockets.emit(email,doc);
+          }
+          else {
+            console.log("A document was updated.");
+            console.log("Old value:");
+            console.log(JSON.stringify(doc.getOldValue()));
+            console.log("New value:");
+            console.log(JSON.stringify(doc));
+          }
+        });
+      }).error(function(error) {
+        console.log(error);
+        process.exit(1);
+      });
     });
-};
-
-/** Define the '/nearest' endpoint for the backend API. It takes two URL query parameters,
- * representing the lattitude and longitude of a point. It then querries the 'earthquakes' table to find the closest
- * earthquake, which is returned as a JSON object
- * 
- * @param req
- * @param res
- */
-
- exports.findNearestEarthquakes = function (req, res) {
-    var latitude = req.param("latitude");
-    var longitude = req.param("longitude");
-
-    if(!latitude || !longitude)
-        return res.status(500).json({ err: "Invalid Point"});
-
-    var conn;
-
-    r.connect(config.database).then(function(c) {
-        conn = c;
-
-        return r.table("quakes").getNearest(
-            r.point(parseFloat(longitude), parseFloat(latitude)),
-            { index: "geometry", maxDist: 1000, unit: "mi"}).run(conn);
-    }).then(function (result) { res.json(result);}).error(
-        function (err) {
-            console.log("Error handling /nearest request:", err);
-            res.status(500).json({err: err});
-        }).finally(function () {
-        if(conn)
-            conn.close();
-    });
-};
-
-/**
- * 
- * @param req
- * @param res
- */
-exports.inbetweenEarthquakes = function (req, res) {
-    var conn;
-    var firstParam = parseInt(req.params.first);
-    var secondParam = parseInt(req.params.second);
-    
-    r.connect(config.database).then(function(c) {
-        conn = c;
-        return r.table("quakes").orderBy({index:r.desc('propertiesTime')}).between(firstParam, secondParam).run(conn);
-        
-    }).then(function(cursor){ return cursor.toArray();}).then(
-        function (result) { res.json(result);}).error(function (err) {
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-    }).finally(function() {
-        if(conn)
-            conn.close();
-    });
-
-};
-
-
-/**
- * 
- * @param req
- * @param res
- */
-exports.lessthanEarthquakes = function (req, res) {
-    var conn;
-    var firstParam = parseInt(req.params.first);
-    
-    r.connect(config.database).then(function(c) {
-        conn = c;
-        return r.table("quakes").filter(r.row("properties")("time").lt(firstParam)).run(conn);
-
-    }).then(function(cursor){ return cursor.toArray();}).then(
-        function (result) { res.json(result);}).error(function (err) {
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-    }).finally(function() {
-        if(conn)
-            conn.close();
-    });
-    
-};
-
-
-/**
- * 
- * @param req
- * @param res
- */
-exports.greatorthanEarthquakes = function (req, res) {
-    var conn;
-    var firstParam = parseInt(req.params.first);
-
-    r.connect(config.database).then(function(c) {
-        conn = c;
-        return r.table("quakes").filter(r.row("properties")("time").gt(firstParam)).run(conn);
-
-    }).then(function(cursor){ return cursor.toArray();}).then(
-        function (result) { res.json(result);}).error(function (err) {
-        console.log("Error handling /quakes request:", err);
-        res.status(500).json({success: false, err: err});
-    }).finally(function() {
-        if(conn)
-            conn.close();
-    });
-
-};
-
+}

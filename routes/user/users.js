@@ -1,15 +1,24 @@
-/*var express = require('express');
-var router = express.Router();
-*/
-/* GET users listing. */
-/*router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+/*
+ Author: Molefe Keletso Patrick
+ Description: Login/Register Routes
+ */
 
-module.exports = router;
-*/
+'use strict';
 
-module.exports = function(app) {
+module.exports = function(app){
+  var authentication = require("../../controller/user/userController.js");
 
+  app.route('/login').post(authentication.login);
+  app.route('/register').post(authentication.register);
+  app.route('/token').get(authentication.token);
+  app.route('/logout').get(authentication.logout);
+  app.route('/favourate').post(authentication.favourate);
+  app.route('/getfavourate').get(authentication.getfavourate);
+  app.route('/earthquakefilter').post(authentication.earthquakefilter);
+  app.route('/getearthquakefilter').get(authentication.getearthquakefilter);
+  app.use(function(err,req,res,next){
+    if (err.name === 'UnauthorizedError'){
+      res.status(401).json({message: "invalid token"});
+    }
+  });
 };
-
