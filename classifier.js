@@ -1,6 +1,5 @@
 var twit = require('twitter');
 var r = require('rethinkdb');
-var config = require('./Javascript/rethinkdb_config.js');
 
 var twitter = new twit({
 	consumer_key: 'on8ErOJyiiCzgysZNAj0hsH8l',
@@ -24,14 +23,14 @@ twitter.stream('statuses/filter', {track: search, language: "en"}, function(stre
 		var state = bayes.classify(tweet.text);
 
 		console.log("id: " +  count + "\ntweet: " + tweet.text +"\ncategory: " + state + "\n");
-	
+
 		count++;
-		
-		/*	
+
+		/*
 		var insertTweet = {
 			"id": count,
 			"tweet": tweet.text
-		};	
+		};
 		r.connect(config.twitterFeedDatabase).then(function(c) {
 			conn = c;
 			return r.dbCreate(config.twitterFeedDatabase.db).run(conn);
