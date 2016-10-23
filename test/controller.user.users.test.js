@@ -22,26 +22,25 @@ var sinonChai = require('sinon-chai');
 var token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbHVueXpAeWFob28uY29tIiwiZmlyc3RfbmFtZSI6Ik1hbHVsZWtpIiwibGFzdF9uYW1lIjoiTnl1c3dhIn0.ek9iV_iUiPIPNmFsjlHAEqA2UQ-8XjK-8BZo3DNCjx0';
 
 var server = require('../server');
-var earthquake = require('../controller/disaster/earthquakes');
-//var quakesTable = require('../models/disaster/earthquakes_model');
+var user = require('../controller/user/userController');
 
 chai.use(chaiHttp);
 
 // Parent block
-describe('EarthQuakeTest', function() {
+describe('UsersModuleTest', function() {
   var conn;
-  beforeEach(function (done) { // Before each test we empty the database
+  beforeEach(function (done) {
     console.log('before test!');
 
-    db.connect(config.database).then(function(c) {
+    db.connect(config.usersDatabase).then(function(c) {
       conn = c;
-      // db.table("quakes").delete();
+      // db.table("Users").delete();
       done();
     })
   })
 
   after(function (done) {
-    db.dbDrop(config.database);
+    db.dbDrop(config.usersDatabase);
     conn.close();
     done();
   });
@@ -49,16 +48,42 @@ describe('EarthQuakeTest', function() {
   /**
    * Test the GET /earthquakes route
    */
-  describe('/GET All Earthquakes', function () {
-    it('it should POST a filter', function (done) {
+  describe('/POST All Users', function () {
+    it('it should POST a message specifying whether the user is already registered', function (done) {
       try {
         chai.request(server)
-          .post('/filteredquakes')
+          .post('/register')
           .set('Authorization', token )
+          .send({
+            email: "malunyz@yahoo.com",
+            first_name: "Maluleki",
+            last_name: "Nyuswa",
+            password: "maluleki"
+
+          })
           .end(function (err, res) {
-            res.should.have.status(200);
-            res.body.should.be.a('array');
-            //res.body.length.should.be.eql(402);
+            res.body.should.a('object');
+            res.body.should.include({"message": "user exist"});
+            done();
+          });
+      }catch(e) {
+        done(e);
+      }
+    });
+
+    it('it should POST a message specifying whether the user is allready logged-in', function (done) {
+      try {
+        chai.request(server)
+          .post('/login')
+          .set('Authorization', token )
+          .send({
+            email: "malunyz@yahoo.com",
+            password: "maluleki"
+
+          })
+          .end(function (err, res) {
+            res.body.should.a('object');
+            res.body.should.have.property('message');
             done();
           });
       }catch(e) {
