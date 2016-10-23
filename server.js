@@ -19,7 +19,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json'}));
 app.use(session({ secret: "We love COS301", resave: false, saveUninitialized: true }));
 
-app.use('/', expressJwt({ secret: "We love COS301"}).unless({ path: ['/login', '/register','/token','/logout'] }));
+app.use('/', expressJwt({ secret: "We love COS301"}).unless({ path: ['/login', '/register','/token','/logout','/forgotpassword'] }));
 
 app.use(morgan('dev'));
 
@@ -31,7 +31,7 @@ require('./routes/disaster/disaster')(app,io);//pass our application into our di
 require('./routes/weather/weather')(app);//weather route
 require('./routes/user/users')(app,transporter);//Login and Register
 
-//require('./scrapper-server');
+require('./scrapper-server');
 //require('./fireScrapData');
 
 //start app
