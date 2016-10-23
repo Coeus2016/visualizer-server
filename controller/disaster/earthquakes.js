@@ -66,11 +66,11 @@ exports.filteredquakes = function(req, res){
             exports.io.sockets.emit(email,doc);
           }
           else {
-            console.log("A document was updated.");
-            console.log("Old value:");
-            console.log(JSON.stringify(doc.getOldValue()));
-            console.log("New value:");
-            console.log(JSON.stringify(doc));
+           // console.log("A document was updated.");
+           // console.log("Old value:");
+           // console.log(JSON.stringify(doc.getOldValue()));
+           // console.log("New value:");
+           // console.log(JSON.stringify(doc));
           }
         });
       }).error(function(error) {
