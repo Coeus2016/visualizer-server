@@ -76,7 +76,7 @@ setInterval(function() {
         if (connect)
             connect.close();
     });
-}, (30 * 1000 * 60));
+}, (300 * 1000 * 60));
 
 // start app =================================================
 app.listen(port);
