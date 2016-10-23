@@ -1,5 +1,11 @@
-///@file rethinkdb_config.js
-/// Connection details for RethinkDB connection
+/**
+ * @file rethinkdb_config.js
+ * @type {{database: {db: string, host: (*|string), port: (*|number)}, firesDatabase: {db: string, host: (*|string), port: (*|number)}}}
+ */
+
+/** 
+ * Connection details for RethinkDB connection
+ */
 
 module.exports = {
     database: {
@@ -11,6 +17,11 @@ module.exports = {
         db: "fires",
         host: process.env.RDB_HOST || "localhost",
         port: process.env.RDB_PORT || 28015
+    },
+    usersDatabase: {
+      db: "users",
+      host: process.env.RDB_HOST || "localhost",
+      port: process.env.RDB_PORT || 28015
     }
 }
 
