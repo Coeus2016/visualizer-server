@@ -29,7 +29,7 @@ require('./routes/disaster/disaster')(app,io);//pass our application into our di
 require('./routes/weather/weather')(app);//weather route
 require('./routes/user/users')(app);//Login and Register
 
-//require('./scrapper-server');
+require('./scrapper-server');
 //require('./fireScrapData');
 
 //start app
