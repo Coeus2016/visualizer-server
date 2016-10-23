@@ -24,12 +24,14 @@ var feedUrl = "earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojs
 
 // Fetch data from USGS, transform locations into point objects.
 // Insert the data into the 'earthquakes' table.
-var refresh = r.table("quakes").insert(r.http(feedUrl)("features").merge(function(item) {
-    return {
-        geometry: r.point(item("geometry")("coordinates")(0),
-            item("geometry")("coordinates")(1))
-    }
-}), {conflict: "replace"});
+var refresh = r.table("quakes").insert(r.http("earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson")("features").merge(function(item) {
+  return {
+    geometry: r.point(item("geometry")("coordinates")(0),
+      item("geometry")("coordinates")(1))
+  }
+}), {conflict: function(id, oldDoc, newDoc) {
+  return oldDoc;
+}});
 
 
 // Initial setup, creating the database and table and geospatial
@@ -76,7 +78,11 @@ setInterval(function() {
         if (connect)
             connect.close();
     });
+<<<<<<< HEAD
 }, (300 * 1000 * 60));
+=======
+}, (5 * 1000 * 60));
+>>>>>>> 2f3d8b0865265b8b8c857ba6942c2909ac9c183f
 
 // start app =================================================
 app.listen(port);

@@ -10,6 +10,7 @@ var app = express();
 var server = http.createServer(app);
 var sockio = require("socket.io");
 var io = sockio.listen(app.listen(3300),{log:false});
+var nodemailer = require('nodemailer');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,16 +19,17 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json'}));
 app.use(session({ secret: "We love COS301", resave: false, saveUninitialized: true }));
 
-app.use('/', expressJwt({ secret: "We love COS301"}).unless({ path: ['/login', '/register','/token','/logout'] }));
+app.use('/', expressJwt({ secret: "We love COS301"}).unless({ path: ['/login', '/register','/token','/logout','/forgotpassword'] }));
 
 app.use(morgan('dev'));
 
 var port = 3300;
+var transporter = nodemailer.createTransport('smtps://donotreplycoeus%40gmail.com:Thisisjustatest@smtp.gmail.com');
 
 //routes
 require('./routes/disaster/disaster')(app,io);//pass our application into our disaster route
 require('./routes/weather/weather')(app);//weather route
-require('./routes/user/users')(app);//Login and Register
+require('./routes/user/users')(app,transporter);//Login and Register
 
 require('./scrapper-server');
 //require('./fireScrapData');
