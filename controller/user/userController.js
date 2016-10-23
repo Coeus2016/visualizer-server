@@ -8,6 +8,7 @@
 var passwordHasher = require('password-hash-and-salt');
 var jwt = require('jsonwebtoken');
 var Q = require('q');
+var generatePassword = require("password-generator");
 
 /*Thinky ORM and Rethink variables*/
 var thinky = require("../../Javascript/users");
@@ -63,7 +64,11 @@ exports.register = function(req, res){
   var email = req.body.email;
   var first_name = req.body.first_name;
   var last_name = req.body.last_name;
-  var password = req.body.password;
+  var transporter = exports.transporter;
+  var maxLength = 10;
+  var minLength = 8;
+  var randomLength = Math.floor(Math.random() * (maxLength - minLength)) + minLength;
+  var password = generatePassword(randomLength, false, /[\w\d\?\-]/);
 
   passwordHasher(password).hash(function(error, hash) {
     if (error)
@@ -85,6 +90,20 @@ exports.register = function(req, res){
         };
 
         User.save([userObject]).then(function(result) {
+          var mailOptions = {
+            from: '"Geospatial Data Visualiser And Processor ?" <donotreplycoeus@gmail.com>',
+            to: email,
+            subject: 'Registration',
+            text: 'Thank you for registering, you password is '+password
+          };
+
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+              return console.log(error);
+            }
+            console.log('Message sent: ' + info.response);
+          });
+
           res.status(201).json({"message": "user created"});
         }).error(function(error) {
           res.json({message: error});

@@ -5,8 +5,9 @@
 
 'use strict';
 
-module.exports = function(app){
+module.exports = function(app,transporter){
   var authentication = require("../../controller/user/userController.js");
+  authentication.transporter = transporter;
 
   app.route('/login').post(authentication.login);
   app.route('/register').post(authentication.register);
