@@ -24,7 +24,7 @@ var feedUrl = "earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojs
 
 // Fetch data from USGS, transform locations into point objects.
 // Insert the data into the 'earthquakes' table.
-var refresh = r.table("quakes").insert(r.http("earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson")("features").merge(function(item) {
+var refresh = r.db("earthquakes").table("quakes").insert(r.http("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson")("features").merge(function(item) {
   return {
     geometry: r.point(item("geometry")("coordinates")(0),
       item("geometry")("coordinates")(1))
@@ -32,29 +32,6 @@ var refresh = r.table("quakes").insert(r.http("earthquake.usgs.gov/earthquakes/f
 }), {conflict: function(id, oldDoc, newDoc) {
   return oldDoc;
 }});
-
-
-// Initial setup, creating the database and table and geospatial
-// index on the 'geometry' property, access the above querry and
-// populate the table with data
-var conn;
-r.connect(config.database).then(function(c) {
-    conn = c;
-    return r.dbCreate(config.database.db).run(conn);
-}).then(function() {
-    return r.tableCreate("quakes").run(conn);
-}).then(function() {
-    return r.table("quakes").indexCreate(
-        "propertiesTime", r.row('properties')('time'), {multi: true}).run(conn);
-}).then(function() {
-    return refresh.run(conn);
-}).error(function(err) {
-    if(err.msg.indexOf("already exists") == -1)
-        console.log(err);
-}).finally(function () {
-    if(conn)
-        conn.close();
-});
 
 
 // Use the refresh query above to automatically update the 'earthquake' database
